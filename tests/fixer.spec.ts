@@ -15,7 +15,7 @@ test.describe('API tests', () =>{
     test('A user will always have an account', async ({ request }) => {
         let response = await request.get('https://kablamo.bank.api/accounts', {headers: { Authorization: 'Bearer ey.123' }});
         let json = await response.json();
-        expect(json.data.length).toBeGreaterThan(0);
+        expect(json.data.accountId).toBeGreaterThan(0);
     });
 
     test('Mandatory field testing', async ({ request }) => {
@@ -36,12 +36,12 @@ test.describe('API tests', () =>{
         const accountId2 = 321;
         const current_balance = (await (await request.get('https://kablamo.bank.api/accounts?active=true')).json()).data.amount;
         let response = await request.put('https://kablamo.bank.api/transfer', { headers: { Authorization: 'Bearer ey.123'},
-        data:
-        {
-            from: accountId,
-            to: accountId2,
-            amount: current_balance / 2
-        }
+            data:
+                {
+                    from: accountId,
+                    to: accountId2,
+                    amount: current_balance / 2
+                }
         });
         // Check response is correct. 
         let json = await response.json();
